@@ -15,6 +15,7 @@
 @implementation ViewController
 
 const int CHESS_DESK_SIZE = 8;
+//const NSArray* colors
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -31,8 +32,13 @@ const int CHESS_DESK_SIZE = 8;
                                        chessDeskSide);
     UIView* chessDeskView = [[UIView alloc] initWithFrame:chessDeskFrame];
 //    NSLog(@"Frame : %@", NSStringFromCGRect(chessDeskView.frame));
-//      NSLog(@"bounds screen: %@", NSStringFromCGRect(chessDeskView.bounds));
+//    NSLog(@"bounds screen: %@", NSStringFromCGRect(chessDeskView.bounds));
     [self.view addSubview:chessDeskView];
+    chessDeskView.autoresizingMask =
+    UIViewAutoresizingFlexibleRightMargin |
+    UIViewAutoresizingFlexibleLeftMargin |
+    UIViewAutoresizingFlexibleTopMargin |
+    UIViewAutoresizingFlexibleBottomMargin;
     
     CGFloat chessViewSide = chessDeskSide / CHESS_DESK_SIZE;
     for (int i = 0; i < CHESS_DESK_SIZE; i++) {
@@ -43,6 +49,7 @@ const int CHESS_DESK_SIZE = 8;
                                                  j * chessViewSide,
                                                  chessViewSide,
                                                  chessViewSide);
+              
                 UIView* subview = [[UIView alloc] initWithFrame:subviewFrame];
                 subview.backgroundColor = [UIColor blackColor];
                 [chessDeskView addSubview:subview];
@@ -54,33 +61,23 @@ const int CHESS_DESK_SIZE = 8;
     // Do any additional setup after loading the view.
 }
 
-//- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
-//  //  CGRect frame = self.view.frame;
-//    CGFloat viewHeight = size.height;
-//    CGFloat viewWidth = size.width;
-//    float subviewHeight = viewHeight / CHESS_TABLE_SIZE;
-//    float subviewWidth = viewWidth / CHESS_TABLE_SIZE;
-//       for (int i = 0; i < CHESS_TABLE_SIZE; i++) {
-//           for (int j = 0; j < CHESS_TABLE_SIZE; j++) {
-//               if ((i + j) % 2 == 0) {
-//                   CGRect subviewFrame = CGRectMake(
-//                                                    i * subviewWidth,
-//                                                    j * subviewHeight,
-//                                                    subviewWidth,
-//                                                    subviewHeight);
-//                   NSLog(@"%@", NSStringFromCGRect(subviewFrame));
-//                   UIView* subview = [[UIView alloc] initWithFrame:subviewFrame];
-//                   subview.backgroundColor = [UIColor blackColor];
-//                   [self.view addSubview:subview];
-//               }
-//           }
-//       }
-//    NSLog(@"Frame is ready");
-//    
-//    
-//    
-//    
-//}
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+    
+    UIView* chessDeskView = [self.view.subviews objectAtIndex:0];
+    NSArray* subviews = chessDeskView.subviews;
+    UIColor* color = [self randomColor];
+    for (UIView* view in subviews) {
+        view.backgroundColor = color;
+    }
+}
+
+- (UIColor *)randomColor {
+    CGFloat red = arc4random_uniform(256) / 255.0;
+    CGFloat green = arc4random_uniform(256) / 255.0;
+    CGFloat blue = arc4random_uniform(256) / 255.0;
+    UIColor *color = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    return color;
+}
 
 
 
